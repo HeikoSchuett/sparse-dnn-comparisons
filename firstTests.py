@@ -29,7 +29,7 @@ data = sparse_testset()
 lm1 = lm.LinearRegression()
 lm1.fit(data[1],data[0])
 
-lasso = lm.Lasso(alpha=0.1)
+lasso = lm.Lasso(alpha=0.1,tol=10**-10)
 lasso.fit(data[1],data[0])
 
 lassoCV = lm.LassoCV(cv = 10)
@@ -67,3 +67,12 @@ ax.spines['top'].set_visible(False)
 # Only show ticks on the left and bottom spines
 ax.yaxis.set_ticks_position('left')
 ax.xaxis.set_ticks_position('bottom')
+
+
+X_norm = data[1]-np.mean(data[1],axis=0)
+y_norm = data[0]-np.mean(data[0])
+
+
+import cProfile
+cProfile.run('lasso_cd(X_norm,y_norm,0.1)')
+lasso_cd(X_norm,y_norm,0.1)
